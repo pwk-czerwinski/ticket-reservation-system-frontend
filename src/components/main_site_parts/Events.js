@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { apiPath } from '../../index';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { chooseEvent } from '../../actions/userData';
-const axios = require('axios');
+import TicketReservationSystemBackendApi from '../../api/TicketReservationSystemBackendApi';
 
+/**
+ * Component responsible for handling events.
+ */
 class Events extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       events: [],
-      choosedEvent: {
+      selectedEvent: {
         id: '',
         name: '',
         dateOfEvent: ''
@@ -20,7 +22,11 @@ class Events extends Component {
   }
 
   componentDidMount() {
-    this.getEvents();
+    TicketReservationSystemBackendApi.getEvents()
+        .then(events => this.setState({
+            ...this.state,
+            events: events
+        }));
   }
 
   render() {
@@ -30,19 +36,19 @@ class Events extends Component {
 
     if (this.state.events.length > 0) {
       liData.push(<li data-target="#myCarousel" data-slide-to="0" key="0" className="active"/>);
+
       activeItem = (
         <div className="item active">
           <img
-            // src={ this.state.events[0].image_url.replace('localhost', '172.16.16.74') }
-            src={ this.state.events[0].image_url.replace('localhost:8888/images/', '18.195.253.178:8888/') }
+            src={ this.state.events[0].image_url }
             alt=""
             onClick={() => {
               this.props.dispatch(chooseEvent({
-                choosedEvent: {
-                  id: this.state.events[0].id,
-                  name: this.state.events[0].name,
-                  dateOfEvent: this.state.events[0].date_of_event
-                }
+                  selectedEvent: {
+                      id: this.state.events[0].id,
+                      name: this.state.events[0].name,
+                      dateOfEvent: this.state.events[0].date_of_event
+                  }
               }));
             }}
           />
@@ -59,16 +65,15 @@ class Events extends Component {
         let item = (
           <div className="item" key={"item"+i}>
             <img
-              // src={ this.state.events[i].image_url.replace('localhost', '172.16.16.74') }
-              src={ this.state.events[i].image_url.replace('localhost:8888/images/', '18.195.253.178:8888/') }
+              src={ this.state.events[i].image_url }
               alt=""
               onClick={() => {
                 this.props.dispatch(chooseEvent({
-                  choosedEvent: {
-                    id: this.state.events[i].id,
-                    name: this.state.events[i].name,
-                    dateOfEvent: this.state.events[i].date_of_event
-                  }
+                    selectedEvent: {
+                        id: this.state.events[i].id,
+                        name: this.state.events[i].name,
+                        dateOfEvent: this.state.events[i].date_of_event
+                    }
                 }));
               }}
             />
@@ -84,12 +89,17 @@ class Events extends Component {
 
     return (
       <div id="events" className="events text-center">
-        <h1>Upcomming events</h1>
+        <h1>Upcoming events</h1>
         <p>Events which will take place in the near future</p>
         <div id="myCarousel" className="carousel slide" data-ride="carousel">
-          <ol className="carousel-indicators">{liData}</ol>
+          <ol className="carousel-indicators">
+              { liData }
+          </ol>
           <Link to="/sectors">
-            <div className="carousel-inner">{activeItem}{items}</div>
+            <div className="carousel-inner">
+                { activeItem }
+                { items }
+            </div>
           </Link>
 
           <a className="left carousel-control" href="#myCarousel" data-slide="prev">
@@ -104,22 +114,11 @@ class Events extends Component {
       </div>
     );
   }
-
-  getEvents() {
-    axios.get(apiPath + '/events', { withCredentials: true })
-      .then((response) => {
-      if (response.status === 200) {
-        this.setState({
-          events: response.data.events
-        });
-      }
-    });
-  }
 }
 
 const mapStateToProps = (state) => {
   return {
-    choosedEvent: state.choosedEvent
+      selectedEvent: state.selectedEvent
   }
 };
 
