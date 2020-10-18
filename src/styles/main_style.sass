@@ -1,0 +1,385 @@
+$font-stack:    Helvetica, sans-serif
+$primary-color: #333
+$dark: #000
+$main-site-text-color: white
+
+#events
+  background-color: #333333 //#FF851B
+
+div
+  font: 22px $font-stack
+  font-family: Lato
+
+a
+  text-decoration : none
+  color : white
+  &:hover
+    text-decoration : none
+    color : white
+  &:focus
+    text-decoration : none
+    color : white
+
+#stadium-container
+  padding: 0
+  margin: auto
+  display: block
+  width: 640px
+
+.pointer-view
+  cursor: pointer
+
+.default-view
+  cursor: default
+
+.sector-place
+  font-size: small
+  font-weight: bold
+  width: 35px
+  color: white
+  border: 1px solid
+  outline: none
+
+.sector-place-accessible
+  background-color: #76b852
+  &:hover
+    background-color: #fcb045
+
+.sector-place-inaccessible
+  background-color: #fd1d1d
+  cursor: not-allowed
+  pointer-events: none
+
+.img-container
+  filter: brightness(50%)
+  background: url("../images/stadium-chairs-1.jpg")
+  height: 100vh
+  background-position: center
+  background-repeat: no-repeat
+  background-size: cover
+  width: 100%
+
+.center
+  position: absolute
+  width: 800px
+  height: 50px
+  top: 32%
+  left: 50%
+  margin-left: -0.5*800px /* margin is -0.5 * dimension */
+  margin-top: -25px
+
+.sub-center
+  position: absolute
+  width: 800px
+  height: 50px
+  top: 58%
+  left: 50%
+  margin-left: -0.5*800px /* margin is -0.5 * dimension */
+  margin-top: -25px
+
+.sub2-center
+  position: absolute
+  width: 800px
+  height: 50px
+  top: 70%
+  left: 50%
+  margin-left: -0.5*100px /* margin is -0.5 * dimension */
+  margin-top: -25px
+
+.main-container
+  color: $main-site-text-color
+
+.main-text
+  font-size: 60px
+
+.sub-main-text
+  font-size: 32px
+
+.btn-main-page
+  background-color: transparent
+  color: $main-site-text-color
+  border: solid 2px
+  max-width: 360px
+  height: 60px
+  border-radius: 25px
+  &:hover
+    background-color: #159957
+  &:focus
+    outline: 0
+
+.btn-choosed-sector
+  background-color: white
+  color: forestgreen
+  border: solid 2px
+  width: 300px
+  height: 50px
+  border-radius: 55px
+  padding: 15px
+  font-size: medium
+  &:hover
+    color: white
+    background-color: forestgreen
+  &:focus
+    outline: 0
+
+.btn-next
+  background-color: white
+  color: #0f9b0f
+  border: solid 1px
+  width: 180px
+  height: 40px
+  border-radius: 25px
+  &:hover
+    color: white
+    background-color: #0f9b0f
+  &:focus
+    outline: none
+
+button
+  outline: none
+
+.btn-back
+  background-color: white
+  color: #fd1d1d
+  border: solid 1px
+  width: 180px
+  height: 40px
+  border-radius: 25px
+  margin: 15px
+  font-size: medium
+  outline: none
+  &:hover
+    color: white
+    background-color: #fd1d1d
+  &:focus
+    outline: 0
+
+.link-to-choose-place
+  color: forestgreen
+  &:hover
+    color: white
+
+.carousel
+  max-width: 960px
+  position: absolute
+  margin-left: auto
+  margin-right: auto
+  margin-top: 20px
+  left: 0
+  right: 0
+
+.item
+  width: auto
+  height: 420px
+
+.events
+  //background-color: #FF851B //crimson //#85144b
+  color: white
+  padding-top: 30px
+  padding-bottom: 50px
+  height: 640px
+
+footer
+  background-color: #182848 //#348F50
+  height: 180px
+  color: $main-site-text-color
+
+.sector-places-indent
+  margin-right: 15px
+
+.content-center
+  float: none
+  margin: 0 auto
+
+.places-choosing
+  //background-color: #56B4D3
+  padding: 20px
+  //color: white
+  margin-top: 30px
+  margin-bottom: 30px
+
+.bottom-btn-nav
+  //background-color: #56B4D3
+  background-color: #348F50
+  padding-top: 20px
+  padding-bottom: 50px
+  font-size: medium
+
+.header-footer-decorate
+  background-color: #348F50
+  padding-top: 10px
+  padding-bottom: 30px
+  color: white
+
+table
+  font-size: small
+
+.select-sector
+  width: 95%
+  height: 70px
+  margin-top: 60px
+  background-color: transparent
+  color: black
+  border: solid 1px
+  border-radius: 15px
+  text-align: center
+  text-align-last: center
+  font-size: xx-large
+  &:hover
+    background-color: black
+    color: white
+  &:focus
+    outline: 0
+
+.info
+  margin: 10px
+  margin-top: 45px
+  padding: 15px
+  font-size: xx-large
+  background-color: cornflowerblue
+  color: white
+  border-radius: 20px
+  text-align: center
+
+.info-text-content
+  font-size: x-large
+
+@media (min-width: 320px) and (max-width: 480px)
+  .center
+    position: absolute
+    width: 300px
+    height: 50px
+    top: 32%
+    left: 50%
+    margin-left: -0.5*300px /* margin is -0.5 * dimension */
+    margin-top: -25px
+
+  .sub-center
+    position: absolute
+    width: 300px
+    height: 50px
+    top: 54%
+    left: 50%
+    margin-left: -0.5*300px /* margin is -0.5 * dimension */
+    margin-top: -25px
+
+  .sub2-center
+    position: absolute
+    width: 300px
+    height: 50px
+    top: 65%
+    left: 50%
+    margin-left: -0.5*250px /* margin is -0.5 * dimension */
+    margin-top: -25px
+
+  .main-container
+    color: $main-site-text-color
+
+  .main-text
+    font-size: 35px
+
+  .sub-main-text
+    font-size: 13px
+//
+//  .btn-main-page
+//    background-color: transparent
+//    color: $main-site-text-color
+//    border: solid 2px
+//    max-width: 280px
+//    font-size: small
+//    height: 45px
+//    border-radius: 25px
+//    &:hover
+//      background-color: crimson
+//
+//  .btn-next
+//    background-color: white
+//    color: #0f9b0f
+//    border: solid 1px
+//    width: 180px
+//    height: 40px
+//    border-radius: 25px
+//    &:hover
+//      color: white
+//      background-color: #0f9b0f
+//    &:focus
+//      outline: 0
+//
+//  .btn-next
+//    background-color: white
+//    color: #0f9b0f
+//    border: solid 1px
+//    width: 150px
+//    height: 50px
+//    border-radius: 55px
+//    &:hover
+//      color: white
+//      background-color: #0f9b0f
+//    &:focus
+//      outline: 0
+//
+//  .btn-back
+//    background-color: white
+//    color: #fd1d1d
+//    border: solid 1px
+//    width: 150px
+//    height: 50px
+//    border-radius: 55px
+//    //margin: 15px
+//    font-size: medium
+//    outline: none
+//    &:hover
+//      color: white
+//      background-color: #fd1d1d
+//    &:focus
+//      outline: 0
+//
+//  .btn-choosed-sector
+//    background-color: white
+//    color: forestgreen
+//    border: solid 1px
+//    width: 150px
+//    height: 50px
+//    border-radius: 55px
+//    //padding: 15px
+//    font-size: medium
+//    &:hover
+//      color: white
+//      background-color: forestgreen
+//    &:focus
+//      outline: 0
+//
+//  .header-footer-decorate
+//    background-color: #348F50
+//    padding-top: 10px
+//    padding-bottom: 10px
+//
+//    .select-sector
+//    width: 95%
+//    height: 70px
+//    margin-top: 60px
+//    background-color: transparent
+//    color: black
+//    border: solid 1px
+//    border-radius: 15px
+//    text-align: center
+//    text-align-last: center
+//    font-size: xx-large
+//    &:hover
+//      background-color: black
+//      color: white
+//    &:focus
+//      outline: 0
+//
+//  .info
+//    margin: 10px
+//    margin-top: 45px
+//    padding: 15px
+//    font-size: medium
+//    background-color: cornflowerblue
+//    color: white
+//    border-radius: 20px
+//    text-align: center
+//
+//  .info-text-content
+//    font-size: small
