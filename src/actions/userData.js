@@ -2,7 +2,7 @@
 //CHOOSE_EVENT
 export const chooseEvent = (event) => ({
   type: 'CHOOSE_EVENT',
-  choosedEvent: event
+  selectedEvent: event
 });
 
 // CHOOSE_SECTOR
@@ -11,10 +11,10 @@ export const chooseSector = (sectorName) => ({
   sector: sectorName
 });
 
-// ADD_CHOOSED_PLACES
-export const addChoosedPlaces = (places) => ({
-  type: 'ADD_CHOOSED_PLACES',
-  choosedPlaces: places
+// ADD_SELECTED_PLACES
+export const addSelectedPlaces = (places) => ({
+  type: 'ADD_SELECTED_PLACES',
+  selectedPlaces: places
 });
 
 // ADD_PERSONAL_DATA
