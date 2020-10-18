@@ -1,98 +1,82 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { apiPath } from '../index';
+import { connect } from 'react-redux';
 import { addFinalMessage } from '../actions/userData';
-const axios = require('axios');
+import TicketReservationSystemBackendApi from '../api/TicketReservationSystemBackendApi';
 
+/**
+ * Component responsible for reservation confirmation.
+ */
 class ConfirmPage extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      choosedEvent: {},
-      choosedSector: '',
-      choosedPlaces: [],
-      personalData: {}
+        selectedEvent: {},
+        selectedSector: '',
+        selectedPlaces: [],
+        personalData: {}
     };
   }
 
-  componentWillMount() {
-    this.getReservationData();
+  componentDidMount() {
+    TicketReservationSystemBackendApi.getReservationData()
+        .then(reservationData => {
+            this.setState({
+                ...this.state,
+                selectedEvent: this.props.userData.event,
+                selectedSector: reservationData.sector,
+                selectedPlaces: reservationData.places,
+                personalData: this.props.userData.personalData
+            });
+        })
+  }
+
+  confirmReservation() {
+      TicketReservationSystemBackendApi.confirmReservation()
+          .then(data => this.props.dispatch(addFinalMessage(data)));
   }
 
   render() {
-    let personalData = null;
-
-    if (this.state.personalData !== {}) {
-      personalData = (
-        <div>
-          <h1>Your data</h1>
-          <h3>First name: { this.state.personalData.firstName }</h3>
-          <h3>Last name: { this.state.personalData.lastName }</h3>
-          <h3>Email address: { this.state.personalData.email }</h3>
-          <hr/>
-        </div>
-      );
-    }
-
     return (
-      <div className="container-fluid text-center">
-        <div className="row header-footer-decorate">
-          <h2>Last step</h2>
-          <p>If data is correct please confirm reservation</p>
-        </div>
+        <div className="container-fluid text-center">
+          <div className="row header-footer-decorate">
+            <h2>Last step</h2>
+            <p>If data is correct please confirm reservation</p>
+          </div>
           <div className="row">
-            <h1>Choosed places</h1>
-            <h3>Sector: { this.state.choosedSector }</h3>
-            <h3>Places:</h3> {this.state.choosedPlaces.map(function(place) {
-              return <div key={place.row-place.place}>Row: {place.row} Place: {place.place}</div>;
-            })
+            <h1>Selected places</h1>
+            <h3>Sector: { this.state.selectedSector }</h3>
+            <h3>Places:</h3>
+            {
+                this.state.selectedPlaces && this.state.selectedPlaces.length > 0 ?
+                    this.state.selectedPlaces
+                        .map(place => <div key={place.row-place.place}>Row: {place.row} Place: {place.place}</div>) : null
             }
             <hr/>
-            { personalData }
+            {
+                this.state.personalData !== {} ?
+                    <div>
+                        <h1>Your data</h1>
+                        <h3>First name: { this.state.personalData.firstName }</h3>
+                        <h3>Last name: { this.state.personalData.lastName }</h3>
+                        <h3>Email address: { this.state.personalData.email }</h3>
+                        <hr/>
+                    </div> : null
+            }
             <div className="row bottom-btn-nav">
               <Link to="/data-form">
                 <button className="btn-back">{'<< Back'}</button>
               </Link>
               <Link to="/final">
                 <button
-                  className="btn-next"
-                  onClick={() => this.confirmReservation()}
+                    className="btn-next"
+                    onClick={() => this.confirmReservation()}
                 >Confirm >></button>
               </Link>
+            </div>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  getReservationData() {
-    axios.get(apiPath + '/reservation-data', { withCredentials: true })
-      .then((response) => {
-        if (response.status === 200) {
-          this.setState({
-            choosedEvent: this.props.userData.event,
-            choosedSector: response.data.sector,
-            choosedPlaces: response.data.places,
-            personalData: this.props.userData.personalData
-          });
-        }
-      });
-  }
-
-  confirmReservation() {
-    axios.get(
-      apiPath + '/confirm-reservation',
-      { withCredentials: true }
-    )
-    .then(
-      (response) => {
-        if (response.status === 200) {
-          this.props.dispatch(addFinalMessage(response.data));
-        }
-      }
     );
   }
 }
