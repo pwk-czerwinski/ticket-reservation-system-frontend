@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addPersonalData } from '../actions/userData';
-import { apiPath } from '../index';
-const axios = require('axios');
+import TicketReservationSystemBackendApi from '../api/TicketReservationSystemBackendApi';
 
+/**
+ * Component responsible for handling personal data form.
+ */
 class PersonalDataForm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       firstName: '',
@@ -14,9 +16,14 @@ class PersonalDataForm extends Component {
       email: ''
     };
 
-    this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
-    this.handleLastNameChange = this.handleLastNameChange.bind(this);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      ...this.state,
+      [e.target.name]: e.target.value
+    })
   }
 
   render() {
@@ -38,7 +45,7 @@ class PersonalDataForm extends Component {
                   placeholder="Enter first name"
                   name="firstName"
                   value={this.state.firstName}
-                  onChange={this.handleFirstNameChange}
+                  onChange={this.handleChange}
                 />
               </div>
             </div>
@@ -52,7 +59,7 @@ class PersonalDataForm extends Component {
                   placeholder="Ender last name"
                   name="lastName"
                   value={this.state.lastName}
-                  onChange={this.handleLastNameChange}
+                  onChange={this.handleChange}
                 />
               </div>
             </div>
@@ -66,7 +73,7 @@ class PersonalDataForm extends Component {
                   placeholder="Enter email address"
                   name="email"
                   value={this.state.email}
-                  onChange={this.handleEmailChange}
+                  onChange={this.handleChange}
                 />
               </div>
             </div>
@@ -80,7 +87,7 @@ class PersonalDataForm extends Component {
           <button
             className="btn-next"
             onClick={() => {
-              this.addPersonalData();
+              TicketReservationSystemBackendApi.addPersonalData(this.state);
               this.props.dispatch(addPersonalData({
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
@@ -92,26 +99,6 @@ class PersonalDataForm extends Component {
         </div>
       </div>
     );
-  }
-
-  addPersonalData() {
-    axios.post(
-      apiPath + '/add-personal-data',
-      { 'personalData': this.state },
-      { withCredentials: true }
-    );
-  }
-
-  handleFirstNameChange(e) {
-    this.setState({ firstName: e.target.value });
-  }
-
-  handleLastNameChange(e) {
-    this.setState({ lastName: e.target.value });
-  }
-
-  handleEmailChange(e) {
-    this.setState({ email: e.target.value });
   }
 }
 
