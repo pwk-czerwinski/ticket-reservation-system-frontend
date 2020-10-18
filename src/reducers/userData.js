@@ -1,24 +1,24 @@
 
 const defaultUserData = {
-  choosedEvent: {},
+  selectedEvent: {},
   sector: '',
-  choosedPlaces: [],
+  selectedPlaces: [],
   personalData: {}
 };
 
 export default (state = defaultUserData, action) => {
   switch (action.type) {
     case 'CHOOSE_EVENT':
-      return action.choosedEvent;
+      return action.selectedEvent;
     case 'CHOOSE_SECTOR':
       return {
         ...state,
         sector: action.sector
       };
-    case 'ADD_CHOOSED_PLACES':
+    case 'ADD_SELECTED_PLACES':
       return {
         ...state,
-        choosedPlaces: action.choosedPlaces
+        selectedPlaces: action.selectedPlaces
       };
     case 'ADD_PERSONAL_DATA':
       return {

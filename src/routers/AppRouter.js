@@ -7,9 +7,6 @@ import PersonalDataForm from '../components/PersonalDataForm';
 import NotFoundPage from '../components/NotFoundPage';
 import ConfirmPage from '../components/ConfirmPage';
 import FinalPage from '../components/FinalPage';
-// import AdminPage from '../components/admin/AdminPage';
-// import CreateEvent from '../components/admin/CreateEvent';
-// import ReadEvents from '../components/admin/ReadEvents';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -21,9 +18,6 @@ const AppRouter = () => (
         <Route path="/data-form" component={PersonalDataForm} />
         <Route path="/confirm-data" component={ConfirmPage} />
         <Route path="/final" component={FinalPage} />
-        {/*<Route path="/admin-panel" component={AdminPage} />*/}
-        {/*<Route path="/create-event" component={CreateEvent} />*/}
-        {/*<Route path="/read-events" component={ReadEvents} />*/}
         <Route component={NotFoundPage} />
       </Switch>
     </div>
