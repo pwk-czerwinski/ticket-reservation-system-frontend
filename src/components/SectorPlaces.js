@@ -1,81 +1,62 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { apiPath } from '../index';
 import { Link } from 'react-router-dom';
-import { addChoosedPlaces } from '../actions/userData';
-const axios = require('axios');
+import { connect } from 'react-redux';
+import { addSelectedPlaces } from '../actions/userData';
+import TicketReservationSystemBackendApi from '../api/TicketReservationSystemBackendApi';
 
+/**
+ * Component responsible for handling sector places.
+ */
 class SectorPlaces extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       sectorName: this.props.userData.sector.name,
       stadiumPlaces: [],
-      choosedPlaces: []
+      selectedPlaces: []
     };
+
+    this.goFurther = this.goFurther.bind(this);
   }
 
-  render() {
-    let placesView = this.preparePlacesView();
-
-    return (
-      <div className="container-fluid center-block">
-        <div className="row text-center header-footer-decorate">
-          <h1>Sector <strong>{ this.state.sectorName }</strong></h1>
-          <p>To book a ticket select the place that interests you</p>
-        </div>
-        <div className="row text-center places-choosing">
-          { placesView }
-        </div>
-        <div className="row text-center bottom-btn-nav">
-          <Link to="/sectors">
-            <button className="btn-back">{ '<< Back' }</button>
-          </Link>
-          <button
-            className="btn-next"
-            onClick={() => {
-              if (this.state.choosedPlaces.length > 0) {
-                this.choosePlaces();
-                this.props.dispatch(addChoosedPlaces(this.state.choosedPlaces));
-                this.props.history.push('/data-form');
-              } else {
-                alert('To go further please choose places');
-              }
-            }}>Next step >></button>
-        </div>
-      </div>
-    );
-  }
-
-  choosePlaces() {
-    axios.post(
-      apiPath + '/choose-places',
-      {
-        'places': this.state.choosedPlaces
-      },
-      { withCredentials: true }
-    );
-  }
-
-  componentWillMount() {
+  componentDidMount() {
     if (this.state.sectorName === '') {
       this.props.history.push('/sectors');
     } else {
-      this.getSectorPlaces(this.state.sectorName);
+      TicketReservationSystemBackendApi.getSectorPlaces(this.props.userData.sector.name, this.props.userData.selectedEvent.id)
+          .then(data => {
+            if (data.sector_name !== '') {
+              this.setState({
+                sectorName: data.sector_name,
+                stadiumPlaces: data.stadium_places
+              });
+            } else {
+              this.props.history.push('/sectors');
+            }
+          });
+    }
+  }
+
+  goFurther() {
+    if (this.state.selectedPlaces.length > 0) {
+      TicketReservationSystemBackendApi.choosePlaces(this.state.selectedPlaces);
+      this.props.dispatch(addSelectedPlaces(this.state.selectedPlaces));
+      this.props.history.push('/data-form');
+    } else {
+      alert('To go further please choose places');
     }
   }
 
   handleClick(row, place, id) {
-    let indexOfObj = this.indexOfObj(this.state.choosedPlaces, { row: row, place: place });
+    let indexOfObj = this.indexOfObj(this.state.selectedPlaces, { row: row, place: place });
 
     if (indexOfObj === -1) {
       document.getElementById(id).style.background = '#fcb045';
-      this.state.choosedPlaces.push({ row: row, place: place });
+      this.state.selectedPlaces.push({ row: row, place: place });
     } else {
       document.getElementById(id).style.background='#76b852';
-      this.state.choosedPlaces.splice(indexOfObj, 1);
+      this.state.selectedPlaces.splice(indexOfObj, 1);
     }
   }
 
@@ -130,27 +111,28 @@ class SectorPlaces extends Component {
     return placesView;
   }
 
-  getSectorPlaces() {
-    axios.post(
-      apiPath + '/sector-places',
-      {
-        'sectorName': this.props.userData.sector.name,
-        'idEvent': this.props.userData.choosedEvent.id
-      },
-      { withCredentials: true }
-    )
-    .then((response) => {
-      if (response.status === 200) {
-        if (response.data.sector_name !== '') {
-          this.setState({
-            sectorName: response.data.sector_name,
-            stadiumPlaces: response.data.stadium_places
-          });
-        } else {
-          this.props.history.push('/sectors');
-        }
-      }
-    });
+  render() {
+    return (
+        <div className="container-fluid center-block">
+          <div className="row text-center header-footer-decorate">
+            <h1>Sector <strong>{ this.state.sectorName }</strong></h1>
+            <p>To book a ticket select the place that interests you</p>
+          </div>
+          <div className="row text-center places-choosing">
+            {
+              this.state.stadiumPlaces && this.state.stadiumPlaces.length > 0 ? this.preparePlacesView() : null
+            }
+          </div>
+          <div className="row text-center bottom-btn-nav">
+            <Link to="/sectors">
+              <button className="btn-back">{ '<< Back' }</button>
+            </Link>
+            <button
+                className="btn-next"
+                onClick={() => this.goFurther()}>Next step >></button>
+          </div>
+        </div>
+    );
   }
 }
 
